@@ -1,43 +1,69 @@
 ** Log Archive Analysis & Integrity Verification Tool **
 
-A lightweight Python project for analyzing Linux authentication logs and
-verifying the integrity of archived log files. Supports both plain log files
-and compressed log.gz archives. Provides failed login insights,suspicious IP
-detection and SHA-256 integrity checking.
+A lightweight Python project for analyzing Linux SSH authentication logs and verifying the integrity of archived log files.
+Designed as a semi-beginner friendly security project with clean structure, real CLI usage, and zero external dependencies.
 
-* Requirements -
+Features
 
-# Python
-# A linux Environment
-# Log Files 
-# .gz.sha256 files for integrity verification
+Authentication Log Analyzer (auth_analyzer.py)
 
-Python libraries used are ( gzip, hashlib, argparse, pathlib )
+Parses SSH authentication logs (.log or .log.gz)
+
+Counts failed login attempts by IP and username
+
+Detects suspicious IPs exceeding a configurable threshold
+
+Shows the last 10 successful SSH logins
+
+Uses regex-based extraction for reliability across log formats
+
+Supports both plain and compressed logs
+
+Integrity Verifier (verify.py)
+
+Validates .gz log archives using matching .sha256 digest files
+
+Detects:
+
+OK → file hash matches
+
+MODIFIED → file tampered
+
+MISSING → digest references a file that doesn’t exist
+
+Handles multi-line sha256sum output safely
+
+Uses only Python standard library (hashlib, pathlib)
 
 * Project Structure - 
 
-This project contains two main tools:
+project/
+│
+├── auth_analyzer.py          # SSH auth log analysis tool
+├── verify.py                 # SHA-256 integrity checker
+├── sample_auth.log           # Example SSH log for testing
+├── README.md
+└── log-archive/              # Example archive directory
+    ├── auth_*.log.gz
+    ├── kern_*.log.gz
+    ├── history_*.log.gz
+    ├── syslog_*.gz
+    └── *.sha256
+Requirements
 
-# auth_analyzer.py
-An authentication log analysis tool that examines SSH login activity, failed login attempts, targeted usernames, and suspicious IP behavior.
+Python 3.8+
 
-# verify.py
-A SHA-256 integrity checker that validates .gz log archives against their .sha256 digest files to detect tampered or missing logs.
+Linux or WSL (Windows Subsystem for Linux)
 
-# sample_auth.log
-A small example log used for testing.
+No external dependencies — only Python standard library:
 
-~/log-archive/
-    auth_*.log.gz
-    syslog_*.gz
-    kern_*.log.gz
-    *.sha256
+gzip, hashlib, argparse, pathlib, re, collections    
 
 * What the Tools do - 
 
 # Authentication Log Analyzer
 
-Scans authentication logs for SSH-related activity
+Scans Linux authentication logs for SSH activity and extracts useful security insights.
 
 Identifies failed login attempts and counts them by IP address
 
@@ -48,6 +74,8 @@ Flags suspicious IPs based on a user-defined threshold
 Displays recent successful login events for correlation
 
 Supports both plain .log and compressed .log.gz formats
+
+Uses regex-based parsing for reliability across OpenSSH logs
 
 # Integrity Verification
 
@@ -69,7 +97,20 @@ This ensures your log archives have not been altered or corrupted before analysi
 
 * Usage
 
-Authentication Analysis reviews authentication logs to identify failed login attempts, targeted usernames, suspicious IP activity, and recent successful logins.
-It helps detect brute-force attempts and unusual SSH behavior.
+Authentication Log Analysis
 
-Integrity Checking checks whether each archived .gz log matches its recorded SHA-256 hash. It quickly shows which logs are intact, altered, or missing.
+Analyze SSH authentication logs to:
+
+Detect failed login attempts
+
+Identify brute-force behavior
+
+See which users are being targeted
+
+Review recent successful SSH logins
+
+Integrity Checking
+
+python3 verify.py --dir ./log-archive  ( Use this code in bash )
+It will quickly show which logs are intact, modified or missing.
+
