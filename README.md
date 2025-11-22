@@ -85,7 +85,7 @@ MISSING → log referenced by digest not found
 
 This ensures your log archives have not been altered or corrupted before analysis.
 
-* Usage
+Usage
 
 Authentication Log Analysis
 
