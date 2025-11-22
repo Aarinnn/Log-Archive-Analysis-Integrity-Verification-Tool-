@@ -35,20 +35,10 @@ Handles multi-line sha256sum output safely
 
 Uses only Python standard library (hashlib, pathlib)
 
-* Project Structure - 
+Project Structure
 
-project/
-│
-├── auth_analyzer.py          # SSH auth log analysis tool
-├── verify.py                 # SHA-256 integrity checker
-├── sample_auth.log           # Example SSH log for testing
-├── README.md
-└── log-archive/              # Example archive directory
-    ├── auth_*.log.gz
-    ├── kern_*.log.gz
-    ├── history_*.log.gz
-    ├── syslog_*.gz
-    └── *.sha256
+<img width="697" height="437" alt="image" src="https://github.com/user-attachments/assets/afd3a403-2f92-45a8-9bb0-d12efad92953" />
+
 Requirements
 
 Python 3.8+
