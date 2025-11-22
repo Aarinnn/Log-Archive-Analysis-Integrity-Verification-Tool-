@@ -101,6 +101,14 @@ Review recent successful SSH logins
 
 Integrity Checking
 
-python3 verify.py --dir ./log-archive  ( Use this code in bash )
+<img width="467" height="55" alt="image" src="https://github.com/user-attachments/assets/6e3d3b3a-ca00-4b51-9f31-aa7a1d51c1e5" />
+
 It will quickly show which logs are intact, modified or missing.
+
+Testing
+
+You can quickly smoke-test both tools:
+
+<img width="491" height="200" alt="image" src="https://github.com/user-attachments/assets/31f198e2-665a-47c2-832c-4a5e13a003b3" />
+
 
