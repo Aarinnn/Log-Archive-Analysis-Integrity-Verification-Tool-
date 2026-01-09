@@ -3,6 +3,7 @@
 import datetime as dt
 import shutil
 import gzip
+import brotli
 import hashlib
 from pathlib import Path
 
