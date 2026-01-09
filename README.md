@@ -1,75 +1,117 @@
-** Log Archive Analysis & Integrity Verification Tool **
+# Log Archive Analysis & Integrity Verification Tool
 
-A lightweight Python project for analyzing Linux authentication logs and
-verifying the integrity of archived log files. Supports both plain log files
-and compressed log.gz archives. Provides failed login insights,suspicious IP
-detection and SHA-256 integrity checking.
+A lightweight Python tool for analyzing Linux authentication logs and verifying log file integrity. Detects brute force attacks, username enumeration, and suspicious login patterns using SQL-based threat detection.
 
-* Requirements -
+## Features
 
-# Python
-# A linux Environment
-# Log Files 
-# .gz.sha256 files for integrity verification
+### Authentication Log Analyzer
+- Parses SSH authentication logs (plain `.log` or compressed `.log.gz`)
+- Detects failed login attempts and brute force attacks
+- Identifies most targeted usernames
+- Analyzes attack time patterns
+- Detects username enumeration (IPs trying multiple usernames)
+- **SQL-powered threat detection** with persistent database storage
 
-Python libraries used are ( gzip, hashlib, argparse, pathlib )
+### Integrity Verifier
+- Validates archived log files using SHA-256 checksums
+- Detects tampered or corrupted log archives
+- Ensures forensic integrity of log data
 
-* Project Structure - 
+## Requirements
 
-This project contains two main tools:
+- Python 3.8 or higher
+- Linux, macOS, or Windows with WSL
+- SSH authentication logs (typically `/var/log/auth.log` or `/var/log/secure`)
 
-# auth_analyzer.py
-An authentication log analysis tool that examines SSH login activity, failed login attempts, targeted usernames, and suspicious IP behavior.
+**No external dependencies required** - uses only Python standard libraries.
 
-# verify.py
-A SHA-256 integrity checker that validates .gz log archives against their .sha256 digest files to detect tampered or missing logs.
+## Installation
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/log-archive-tool.git
+cd log-archive-tool
+```
 
-# sample_auth.log
-A small example log used for testing.
+## Usage
 
-~/log-archive/
-    auth_*.log.gz
-    syslog_*.gz
-    kern_*.log.gz
-    *.sha256
+### Analyze Authentication Logs
+```bash
+# Analyze current auth log
+python3 auth_analyzer.py /var/log/auth.log
 
-* What the Tools do - 
+# Analyze compressed archive
+python3 auth_analyzer.py /var/log/auth.log.1.gz
 
-# Authentication Log Analyzer
+# Use custom threshold for suspicious IPs (default: 3)
+python3 auth_analyzer.py /var/log/auth.log --threshold 10
 
-Scans authentication logs for SSH-related activity
+# Analyze sample data (included)
+python3 auth_analyzer.py sample_auth.log
+```
 
-Identifies failed login attempts and counts them by IP address
+### SQL Threat Detection Queries
 
-Highlights usernames repeatedly targeted during brute-force attempts
+The tool automatically runs 4 SQL-based threat detection queries:
 
-Flags suspicious IPs based on a user-defined threshold
+1. **Brute Force Detection** - Identifies IPs with the most failed login attempts
+2. **Most Targeted Usernames** - Shows which accounts attackers are targeting
+3. **Time-Based Analysis** - Reveals when attacks occur (by hour)
+4. **Username Enumeration** - Detects IPs scanning for valid usernames
 
-Displays recent successful login events for correlation
+All data is stored in `auth_logs.db` (SQLite) for persistent analysis.
 
-Supports both plain .log and compressed .log.gz formats
+### Verify Log Integrity
+```bash
+# Verify all log archives in a directory
+python3 verify.py -d /path/to/log-archive
 
-# Integrity Verification
+# Verify with custom digest file pattern
+python3 verify.py -d /path/to/logs --pattern "*.sha256"
+```
 
-Reads .gz.sha256 digest files
+## Example Output
+```
+========== BRUTE FORCE DETECTION (TOP IPS) ==========
+IP: 192.168.1.100 - Failed attempts: 45
+IP: 10.0.0.50 - Failed attempts: 12
 
-Computes SHA-256 checksums for archived .gz logs
+========== MOST TARGETED USERS ==========
+Username: root - Targeted 35 times
+Username: admin - Targeted 15 times
 
-Compares expected vs. actual hashes
+========== IPS USING MULTIPLE USERNAMES ==========
+IP: 192.168.1.100 - Tried 5 different usernames (45 total attempts)
+```
 
-Reports logs as:
+## Project Structure
+```
+log-archive-tool/
+├── auth_analyzer.py          # Main log analysis tool with SQL queries
+├── verify.py                 # Integrity verification tool
+├── sample_auth.log           # Sample data for testing
+├── auth_logs.db             # SQLite database (created on first run)
+└── README.md                # This file
+```
 
-OK → integrity confirmed
+## Real-World Use Cases
 
-MODIFIED → mismatch detected
+- **Small business servers** - Monitor SSH login attempts without enterprise SIEM
+- **Security auditing** - Analyze historical logs for incident investigation
+- **Learning environment** - Practice threat detection and log analysis
+- **Incident response** - Quickly identify attack patterns and timelines
 
-MISSING → log referenced by digest not found
+## Technical Details
 
-This ensures your log archives have not been altered or corrupted before analysis.
+- Written in Python 3
+- Uses SQLite for data persistence
+- Regex-based log parsing for flexibility
+- SHA-256 hashing for integrity verification
+- Zero external dependencies
 
-* Usage
+## Author
 
-Authentication Analysis reviews authentication logs to identify failed login attempts, targeted usernames, suspicious IP activity, and recent successful logins.
-It helps detect brute-force attempts and unusual SSH behavior.
+Aarinnn - [GitHub Profile](https://github.com/YOUR_USERNAME)
 
-Integrity Checking checks whether each archived .gz log matches its recorded SHA-256 hash. It quickly shows which logs are intact, altered, or missing.
+## License
+
+Open source - feel free to use and modify!
