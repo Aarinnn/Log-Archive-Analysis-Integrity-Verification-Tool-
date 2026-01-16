@@ -1,3 +1,10 @@
+[![Linux](https://img.shields.io/badge/OS-Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://www.linux.org/)
+[![Python](https://img.shields.io/badge/python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Bash](https://img.shields.io/badge/bash-4.0+-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
+[![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Aarinnn/Log-Archive-Analysis-Integrity-Verification-Tool-/graphs/commit-activity)
+
 # Log Archive Analysis & Integrity Verification Tool
 
 A lightweight Python tool for analyzing Linux authentication logs and verifying log file integrity. Detects brute force attacks, username enumeration, and suspicious login patterns using SQL-based threat detection.
